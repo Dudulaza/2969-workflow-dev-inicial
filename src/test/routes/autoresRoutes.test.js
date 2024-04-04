@@ -138,6 +138,19 @@ describe('PUT em /autores', () => {
         done();
       });
   });
+
+  it('Não deve retornar uma lista de livros com autor inválido', (done) => {
+    const idAutor = 999;
+    chai.request(app)
+      .get(`/autores/${idAutor}/livros`)
+      .set('Accept', 'application/json')
+      .end((err, res) => {
+        expect(res.status).to.equal(404);
+        expect(res.body).to.have.property('message')
+          .eql(`id ${idAutor} não encontrado`);
+        done();
+      });
+  });
 });
 
 describe('DELETE em /autores', () => {
